@@ -1,23 +1,46 @@
-import logo from './logo.svg';
 import './App.css';
+import Navbar from './Components/Navbar';
+import Landing from './Pages/landing';
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+import Error_404 from './Pages/error_404';
+import Dashboard from './Pages/dashboard';
+import Footer from './Components/Footer';
+import CreateResume from './Pages/CreateResume';
+import UpdateResume from './Pages/UpdateResume';
+
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Landing/>,
+    // eslint-disable-next-line
+    errorElement: <Error_404/>
+    
+  },
+  {
+    path:"/dashboard",
+    element:<Dashboard/>
+  },
+  {
+    path:"/create_resume",
+    element:<CreateResume/>
+  },
+  {
+    path:"/update_resume",
+    element:<UpdateResume/>
+  }
+]);
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Navbar/>
+      {/* <Landing/> */}
+      <RouterProvider router={router} />
+      <Footer/>
     </div>
   );
 }

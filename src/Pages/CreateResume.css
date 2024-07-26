@@ -1,0 +1,14 @@
+.paper{
+    margin: 40px;
+    height: auto;
+    padding: 50px;
+}
+
+.preview-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: auto; /* Adjust height as needed */
+    /* margin-top: 25px; */
+    text-align: center;
+  }

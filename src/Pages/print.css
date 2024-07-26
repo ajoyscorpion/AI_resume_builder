@@ -1,0 +1,207 @@
+@media print {
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding:0;
+      color: #000;
+    }
+  
+    .paper {
+      box-shadow: none;
+      border: none;
+      margin: 100px;
+    }
+
+    .preview-header {
+        text-align: center;
+        margin-top: 100px;
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    /* Personal Details */
+
+    .personal-info-main{
+        margin-top: 70px;
+        margin-left:70px;
+        margin-right: 70px;
+    }
+
+    .personal-info h2{
+        font-size: 40px;
+    }
+
+    .personal-info p {
+        font-size: 15px;
+    }
+
+    .divider{
+        margin-top: 50px;
+    }
+
+    /* Summary */
+
+    .summary{
+        margin-left:70px;
+        margin-right: 70px;
+        margin-top: 30px;
+    }
+
+    .summary-content p{
+        font-size: 18px;
+    }
+
+    /* Work Experience */
+
+    .workExperience{
+        margin-left:70px;
+        margin-right: 70px;
+        margin-top: 30px;
+    }
+
+    .work_experience{
+        margin-top: 25px;
+    }
+
+    .workExperience-content h4{
+        font-size: 25px;
+    }
+
+    .workExperience-content .title{
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+    .workExperience-content p {
+        font-size: 20px;
+    }
+
+    .workExperience-content .description {
+        font-size: 20px;
+    }
+
+    /* Projects */
+    .projects {
+        margin-left:70px;
+        margin-right: 70px;
+        margin-top: 30px;
+    }
+
+    .project-content h4{
+        font-size: 25px;
+    }
+
+    .project_items .title{
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+    .project-content p {
+        font-size: 20px;
+    }
+
+    .project-content .description {
+        font-size: 20px;
+    }
+
+    .projects_item {
+        margin-top: 40px;
+        margin-bottom: 20px;
+    }
+
+
+    /* Education */
+
+    .education {
+        margin-left:70px;
+        margin-right: 70px;
+        margin-top: 30px;
+    }
+
+    .education_content h4{
+        font-size: 25px;
+    }
+
+    .education_items .title {
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+    .education_item {
+        margin-top: 40px;
+        margin-bottom: 20px;
+    }
+
+    .education_content p {
+        font-size: 20px;
+    }
+
+    /* Skills */
+
+    .skills {
+        margin-left:70px;
+        margin-right: 70px;
+        margin-top: 30px; 
+    }
+
+    .skill_content h4 {
+        font-size: 25px;
+    }
+
+    .skills_item p {
+        font-size: 20px;
+    }
+}
+  
+    /*
+  
+    .button {
+      display: none;
+    }
+  
+    .accordion-summary,
+    .accordion-details {
+      border: none;
+      box-shadow: none;
+      margin: 0;
+      padding: 0;
+    }
+  
+    .accordion-summary h6 {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+  
+    .accordion-details {
+      font-size: 16px;
+    }
+  
+    .MuiAccordion-root {
+      border: none;
+      box-shadow: none;
+      margin: 0;
+      padding: 0;
+    }
+  
+    .MuiAccordionSummary-content {
+      margin: 0;
+    }
+  
+    .MuiAccordionSummary-expandIconWrapper {
+      display: none;
+    }
+  
+    .resume-section {
+      margin-bottom: 20px;
+    }
+  
+    .personal-details,
+    .summary,
+    .work-experience,
+    .projects,
+    .education,
+    .skills {
+      margin-bottom: 20px;
+    }
+  } */

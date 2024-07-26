@@ -1,0 +1,12 @@
+.education_items{
+    line-height:5px;
+    margin-bottom: 40px;
+}
+
+.education_content h4 {
+    font-size: 19px;
+}
+
+.education_items .title {
+    font-weight: bold;
+}

@@ -1,0 +1,15 @@
+.work_experience p{
+    line-height: 5px;
+}
+
+.work_experience li{
+    line-height: 23px;
+}
+
+.work_experience {
+    margin-bottom: 50px;
+}
+
+.workExperience-content h4 {
+    font-size: 19px;
+}

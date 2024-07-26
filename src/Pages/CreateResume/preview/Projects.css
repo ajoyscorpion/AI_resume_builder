@@ -1,0 +1,20 @@
+.projects{
+    line-height: 5px;
+    margin-bottom:40px;
+}
+
+.projects li{
+    line-height: 23px;
+}
+
+.project-content h4 {
+    font-size: 19px;
+}
+
+.projects_item {
+    margin-top: 40px;
+}
+
+.projects_item .title{
+    font-weight: bold;
+}
