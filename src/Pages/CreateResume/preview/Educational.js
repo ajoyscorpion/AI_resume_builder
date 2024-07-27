@@ -16,7 +16,7 @@ function Educational({data}) {
         <div className='education_items' key={index}>
           <p className='title'>{items.course}</p>
           <p>{items.college}</p>
-          <p>{items.from}-{items.to}</p>
+          <p>{items.from} - {items.currentCollege === true ? "Present" : items.to}</p>
         </div>
       ))}
     </div>

@@ -8,17 +8,25 @@ import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRou
 import IconButton from '@mui/material/IconButton'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import RemoveIcon from '@mui/icons-material/Remove';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 
 function Experience({onChange}) {
 
+    //const [selectedDate,setSelectedDate] = useState(dayjs)
     const [additionalExperience,setAdditionalExperience] = useState([{
         jobTitle:'',
         company:'',
         place:'',
+        selectedFrom:dayjs(),
+        selectedTo:dayjs(),
         from:'',
         to:'',
-        descriptions:['']
+        descriptions:[''],
+        currentCompany:false
     }])
 
     const [isFresher,setIsFresher] = useState(false)
@@ -28,17 +36,37 @@ function Experience({onChange}) {
         newExperience.push({
             jobTitle:'',
             company:'',
+            selectedFrom:dayjs(),
+            selectedTo:dayjs(),
             from:'',
-                to:'',
-            descriptions:[''] 
+            to:'',
+            descriptions:[''],
+            currentCompany:false
         })
         setAdditionalExperience(newExperience)
     }
 
     const handleChangeExperience = (index,field,value) => {
+        console.log(value);
+        console.log(field);
+        //const formattedDate = dayjs(value).format('MM/YYYY');
+        //console.log(formattedDate);
+        console.log("Inside");
         const updateExperience = [...additionalExperience]
+        console.log(updateExperience);
         updateExperience[index][field] = value
+        console.log(updateExperience);
+        if ( field === 'from' || field === 'to'){
+            updateExperience[index][field] = dayjs(value).format('MM/YYYY')
+        }
         setAdditionalExperience(updateExperience)
+    }
+
+    const handleChangeCurrentCompany = (index) => {
+        const updateExperience = [...additionalExperience]
+        updateExperience[index].currentCompany = !updateExperience[index].currentCompany
+        setAdditionalExperience(updateExperience)
+
     }
 
     const handleDeleteExperience = (index) => {
@@ -107,12 +135,46 @@ function Experience({onChange}) {
                         </Grid>
                     </Grid>
                     <Grid container>
-                        <Grid xs={2} >
-                            <TextField id="from" label="From" value={item.from} onChange={(e) => handleChangeExperience(indexExperience,'from',e.target.value)} variant="standard" xs={2} />
+                        <FormControlLabel
+                            sx={{mt:3}}
+                            value="end"
+                            control={<Checkbox checked={item.currentCompany} onChange={()=>handleChangeCurrentCompany(indexExperience)} />}
+                            label="Current Company ?"
+                            labelPlacement="end"
+                        />
+                    </Grid>
+                    <Grid container>
+                        <Grid xs={4} >
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DatePicker
+                                    sx={{mt:3}}
+                                    size="small"
+                                    //const formattedFrom = dayjs(item.from).format('DD/MM/YYYY');
+                                    views={['month', 'year']}
+                                    label={'From'}
+                                    value={item.selectedFrom}
+                                    onChange={(newValue) => handleChangeExperience(indexExperience,'from',newValue)}
+                                />
+                            </LocalizationProvider>
+                            {/* <TextField id="from" label="From" value={item.from} onChange={(e) => handleChangeExperience(indexExperience,'from',e.target.value)} variant="standard" xs={2} /> */}
                         </Grid>
-                        <Grid xs={2} sx={{ ml: 3 }}>
-                            <TextField id="to" label="To" value={item.to} onChange={(e) => handleChangeExperience(indexExperience,'to',e.target.value)} variant="standard" xs={2} />
-                        </Grid>
+                        {!item.currentCompany && (
+                            <Grid xs={4} sx={{ ml: 3 }}>
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <DatePicker
+                                        sx={{mt:3}}
+                                        size="small"
+                                        //const formattedFrom = dayjs(item.from).format('DD/MM/YYYY');
+                                        views={['month', 'year']}
+                                        label={'To'}
+                                        value={item.selectedTo}
+                                        onChange={(newValue) => handleChangeExperience(indexExperience,'to',newValue)}
+                                    />
+                                </LocalizationProvider>
+                             
+                                {/* <TextField id="to" label="To" value={item.to} onChange={(e) => handleChangeExperience(indexExperience,'to',e.target.value)} variant="standard" xs={2} /> */}
+                            </Grid>
+                        )}
                     </Grid>
                     {item.descriptions.length === 0 && (
                         <IconButton

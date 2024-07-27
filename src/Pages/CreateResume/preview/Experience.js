@@ -6,7 +6,7 @@ function Experience({data}) {
     const datas = data
 
     useEffect(()=>{
-        //console.log(datas);
+        console.log(datas);
     },[datas])
   return (
     <div className='workExperience-content'>
@@ -15,7 +15,7 @@ function Experience({data}) {
             <div className='work_experience' key={index}>
                 <p className='title' style={{fontWeight: 'bold'}}>{items.jobTitle}</p>
                 <p>{items.company} | {items.place}</p>
-                <p>{items.from}-{items.to}</p>
+                <p>{items.from} - {items.currentCompany === true ? "Present" : items.to}</p>
                 <ul>
                     {items.descriptions.length > 0 && (
                         <>

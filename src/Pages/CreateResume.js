@@ -23,6 +23,7 @@ function CreateResume() {
       city: '',
       countryCode: '',
       additionalLinks: [],
+      currentCompany:false
     },
     summary:"",
     workExperience:[
