@@ -9,6 +9,8 @@ import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRou
 import IconButton from '@mui/material/IconButton'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { Country, State, City }  from 'country-state-city';
+import MicNoneIcon from '@mui/icons-material/MicNone';
+import InputAdornment from '@mui/material/InputAdornment';
 
  
 
@@ -108,12 +110,24 @@ function PersonalDetails({onChange}) {
         console.log(additionalLinks)
     } 
 
+    const hey = () => {
+        console.log("hey")
+    }
+
   return (
     <div>
         <form action="">
             <Grid container>
                 <Grid xs={6}>
-                    <TextField id="name" label="Name" variant="standard" value={name} onChange={handleName} xs={6}/>
+                    <TextField id="name" label="Name" variant="standard" value={name} onChange={handleName} xs={6} 
+                        InputProps={{
+                            endAdornment: <InputAdornment position="start">
+                                    <IconButton aria-label="delete" onClick={hey}>
+                                        <MicNoneIcon/>
+                                    </IconButton>
+                                </InputAdornment>,
+                        }}
+                    />
                 </Grid>
                 <Grid xs={6}>
                     <TextField id="jobDescription" label="Job Description" value={jobDescription} onChange={handleJobDescription} variant="standard" xs={6}/>
