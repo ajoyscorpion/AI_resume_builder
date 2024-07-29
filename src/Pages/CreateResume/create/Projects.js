@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
@@ -7,6 +7,9 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import Divider from '@mui/material/Divider';
 import RemoveIcon from '@mui/icons-material/Remove';
 import Typography from '@mui/material/Typography'
+import GraphicEqIcon from '@mui/icons-material/GraphicEq';
+import MicNoneIcon from '@mui/icons-material/MicNone';
+import InputAdornment from '@mui/material/InputAdornment';
 
 
 function Projects({onChange}) {
@@ -16,6 +19,11 @@ function Projects({onChange}) {
         projectLink:[''],
         projectDescription:['']
     }])
+
+    const projectNameRef = useRef(null)
+    const projectDescriptionRef = useRef(null)
+    const [isRecording, setIsRecording] = useState(false);
+    const recognitionRef = useRef(null);
 
 
     const handleAddDescription = (indexProject) => {
@@ -85,6 +93,41 @@ function Projects({onChange}) {
         onChange(updateProjects)
     }
 
+    const handleVoiceInput = (setter , ref) => {
+        if (isRecording) {
+            recognitionRef.current.stop();
+            //window.webkitSpeechRecognition.stop();
+            setIsRecording(false);
+        } else {
+            const recognition = new window.webkitSpeechRecognition()
+            recognition.lang = 'en-US'
+            recognition.continuous = true; // Continue listening even if there is a brief pause
+            recognition.interimResults = false; // Get final results only
+            recognition.start();
+            setIsRecording(true);
+            recognitionRef.current = recognition;
+            
+            recognition.onresult = (event) => {
+                if (event.results && event.results[0] && event.results[0][0]) {
+                    const transcript = event.results[0][0].transcript;
+                    console.log(transcript);
+                    setter(transcript);
+                    setTimeout(() => ref.current.focus(), 200);
+                    //onChange={()=>{setter(transcript)}}
+                }
+            }
+
+            recognition.onerror = (event) => {
+                console.log(event.error);
+                setIsRecording(false);
+            }
+
+            recognition.onend = () => {
+                setIsRecording(false);
+            };
+        }
+    }
+
     useEffect(() => {
         console.log(projects);
         // onChange({
@@ -107,7 +150,15 @@ function Projects({onChange}) {
                 </Grid>
                 <Grid container >
                     <Grid xs={8}>
-                        <TextField fullWidth id="projectTitle" value={items.projectName} onChange={(e) => handleChangeProject(indexProject,'projectName',e.target.value)} label="Project Title" variant="standard" xs={8}/>
+                        <TextField inputRef={projectNameRef} fullWidth id="projectTitle" value={items.projectName} onChange={(e) => handleChangeProject(indexProject,'projectName',e.target.value)} label="Project Title" variant="standard" xs={8}
+                            InputProps={{
+                                endAdornment: <InputAdornment position="start">
+                                        <IconButton aria-label="delete" onClick={()=>handleVoiceInput(value => handleChangeProject(indexProject,'projectName',value),projectNameRef)}>
+                                            {isRecording ? <GraphicEqIcon /> : <MicNoneIcon />}
+                                        </IconButton>
+                                    </InputAdornment>,
+                            }}
+                        />
                     </Grid>
 
                     {items.projectLink.map((projectLink,indexProjectLink) => (
@@ -134,7 +185,15 @@ function Projects({onChange}) {
                     {items.projectDescription.map((projectDescription,indexProjectDescription) => (
                         <>
                             <Grid xs={10} key={indexProjectDescription}>
-                                <TextField fullWidth id="description" label="Description" variant="standard" value={projectDescription} onChange={(e) => handleChangeProjectDescription(indexProject,indexProjectDescription,e.target.value)} multiline rows={2} xs={10}/>
+                                <TextField inputRef={projectDescriptionRef} fullWidth id="description" label="Description" variant="standard" value={projectDescription} onChange={(e) => handleChangeProjectDescription(indexProject,indexProjectDescription,e.target.value)} multiline rows={2} xs={10}
+                                    InputProps={{
+                                        endAdornment: <InputAdornment position="start">
+                                                <IconButton aria-label="delete" onClick={()=>handleVoiceInput(value => handleChangeProjectDescription(indexProject,indexProjectDescription,value),projectDescriptionRef)}>
+                                                    {isRecording ? <GraphicEqIcon /> : <MicNoneIcon />}
+                                                </IconButton>
+                                            </InputAdornment>,
+                                    }}
+                                />
                             </Grid>
                             <Grid xs={1}>
                                 {/* To add Additional description */}

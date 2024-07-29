@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid'
 import InputLabel from '@mui/material/InputLabel';
@@ -11,7 +11,8 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { Country, State, City }  from 'country-state-city';
 import MicNoneIcon from '@mui/icons-material/MicNone';
 import InputAdornment from '@mui/material/InputAdornment';
-
+import MicIcon from '@mui/icons-material/Mic';
+import GraphicEqIcon from '@mui/icons-material/GraphicEq';
  
 
 function PersonalDetails({onChange}) {
@@ -27,6 +28,15 @@ function PersonalDetails({onChange}) {
     const [countryCode,setCountryCode] = useState('')
     const [states,setStates] = useState([])
     const [cities,setCities] = useState([])
+    const [isRecording, setIsRecording] = useState(false);
+    const recognitionRef = useRef(null);
+
+    //const [activeField, setActiveField] = useState('');
+
+    const nameRef = useRef(null);
+    const jobDescriptionRef = useRef(null);
+    //const emailRef = useRef(null);
+    const phoneRef = useRef(null);
 
     const countries = Country.getAllCountries()
 
@@ -42,6 +52,7 @@ function PersonalDetails({onChange}) {
             countryCode,
             additionalLinks,
         });
+        //console.log('Name:', name);
     } ,[name, jobDescription, email, phone, country, state, city, countryCode, additionalLinks,onChange])
 
     const handleName = (e) => {
@@ -110,8 +121,39 @@ function PersonalDetails({onChange}) {
         console.log(additionalLinks)
     } 
 
-    const hey = () => {
-        console.log("hey")
+    const handleVoiceInput = (setter , ref) => {
+        if (isRecording) {
+            recognitionRef.current.stop();
+            //window.webkitSpeechRecognition.stop();
+            setIsRecording(false);
+        } else {
+            const recognition = new window.webkitSpeechRecognition()
+            recognition.lang = 'en-US'
+            recognition.continuous = true; // Continue listening even if there is a brief pause
+            recognition.interimResults = false; // Get final results only
+            recognition.start();
+            setIsRecording(true);
+            recognitionRef.current = recognition;
+            
+            recognition.onresult = (event) => {
+                if (event.results && event.results[0] && event.results[0][0]) {
+                    const transcript = event.results[0][0].transcript;
+                    console.log(transcript);
+                    setter(transcript);
+                    setTimeout(() => ref.current.focus(), 200);
+                    //onChange={()=>{setter(transcript)}}
+                }
+            }
+
+            recognition.onerror = (event) => {
+                console.log(event.error);
+                setIsRecording(false);
+            }
+
+            recognition.onend = () => {
+                setIsRecording(false);
+            };
+        }
     }
 
   return (
@@ -119,18 +161,26 @@ function PersonalDetails({onChange}) {
         <form action="">
             <Grid container>
                 <Grid xs={6}>
-                    <TextField id="name" label="Name" variant="standard" value={name} onChange={handleName} xs={6} 
+                    <TextField inputRef={nameRef} id="name" label="Name" variant="standard" value={name || ''} onChange={handleName} xs={6} 
                         InputProps={{
                             endAdornment: <InputAdornment position="start">
-                                    <IconButton aria-label="delete" onClick={hey}>
-                                        <MicNoneIcon/>
+                                    <IconButton aria-label="delete" onClick={()=>handleVoiceInput(setName,nameRef)}>
+                                        {isRecording ? <GraphicEqIcon /> : <MicNoneIcon />}
                                     </IconButton>
                                 </InputAdornment>,
                         }}
                     />
                 </Grid>
                 <Grid xs={6}>
-                    <TextField id="jobDescription" label="Job Description" value={jobDescription} onChange={handleJobDescription} variant="standard" xs={6}/>
+                    <TextField inputRef={jobDescriptionRef} id="jobDescription" label="Job Description" value={jobDescription} onChange={handleJobDescription} variant="standard" xs={6}
+                        InputProps={{
+                            endAdornment: <InputAdornment position="start">
+                                    <IconButton aria-label="delete" onClick={()=>handleVoiceInput(setName,nameRef)}>
+                                        {isRecording ? <GraphicEqIcon /> : <MicNoneIcon />}
+                                    </IconButton>
+                                </InputAdornment>,
+                        }}
+                    />
                 </Grid>  
             </Grid> 
 
@@ -223,7 +273,15 @@ function PersonalDetails({onChange}) {
                             ))}
                         </Select>
                     </FormControl>
-                    <TextField sx={{width:200, ml:3}} id="phone" label="Phone No" variant="standard" value={phone} onChange={handlePhone} xs={12}/>
+                    <TextField inputRef={phoneRef} sx={{width:200, ml:3}} id="phone" label="Phone No" variant="standard" value={phone} onChange={handlePhone} xs={12}
+                        InputProps={{
+                            endAdornment: <InputAdornment position="start">
+                                    <IconButton aria-label="delete" onClick={()=>handleVoiceInput(setName,nameRef)}>
+                                        {isRecording ? <GraphicEqIcon /> : <MicNoneIcon />}
+                                    </IconButton>
+                                </InputAdornment>,
+                        }}
+                    />
                 </Grid> 
             </Grid>
 

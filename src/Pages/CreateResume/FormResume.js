@@ -19,8 +19,8 @@ import Skills from './create/Skills';
 function FormResume({onPrint}) {
 
     const {resumeDetails,setResumeDetails} = useContext(ResumeDetailsContext)
-    const jobDescription = resumeDetails.personalDetails.jobDescription
-    //const resume = resumeDetails
+    const jobDescription = resumeDetails.personalDetails?.jobDescription || ''
+    const resume = resumeDetails
     const projects = resumeDetails.projects
     const education = resumeDetails.education
     const skills = resumeDetails.skills
@@ -72,12 +72,13 @@ function FormResume({onPrint}) {
     // }
 
     useEffect(()=> {
-        // console.log(resume);
+        console.log(resume.personalDetails);
         // console.log(projects);
         // console.log(jobDescription);
         // console.log(education);
         // console.log(skills);
-    },[jobDescription,projects,education,skills]);
+        // eslint-disable-next-line
+    },[resume.personalDetails]);
 
   return (
     <div>
