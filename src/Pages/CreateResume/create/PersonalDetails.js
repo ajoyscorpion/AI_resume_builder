@@ -11,9 +11,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { Country, State, City }  from 'country-state-city';
 import MicNoneIcon from '@mui/icons-material/MicNone';
 import InputAdornment from '@mui/material/InputAdornment';
-import MicIcon from '@mui/icons-material/Mic';
-import GraphicEqIcon from '@mui/icons-material/GraphicEq';
- 
+import GraphicEqIcon from '@mui/icons-material/GraphicEq'; 
 
 function PersonalDetails({onChange}) {
 
@@ -28,8 +26,12 @@ function PersonalDetails({onChange}) {
     const [countryCode,setCountryCode] = useState('')
     const [states,setStates] = useState([])
     const [cities,setCities] = useState([])
-    const [isRecording, setIsRecording] = useState(false);
+    const [isRecordingName, setIsRecordingName] = useState(false);
+    const [isRecordingJobDescription, setIsRecordingJobDescription] = useState(false);
+    const [isRecordingPhone, setIsRecordingPhone] = useState(false);
     const recognitionRef = useRef(null);
+    const [isRecording, setIsRecording] = useState(false);
+
 
     //const [activeField, setActiveField] = useState('');
 
@@ -55,21 +57,7 @@ function PersonalDetails({onChange}) {
         //console.log('Name:', name);
     } ,[name, jobDescription, email, phone, country, state, city, countryCode, additionalLinks,onChange])
 
-    const handleName = (e) => {
-        setName(e.target.value)
-    }
-
-    const handleJobDescription = (e) => {
-        setJobDescription(e.target.value)
-    }
-
-    const handleEmail = (e) => {
-        setEmail(e.target.value)
-    }
-
-    const handlePhone = (e) => {
-        setPhone(e.target.value)
-    }
+    const handleChange = (setter) => (e) => setter(e.target.value);
 
     const handleCountry = (e) => {
         setCountry(e.target.value)
@@ -121,7 +109,7 @@ function PersonalDetails({onChange}) {
         console.log(additionalLinks)
     } 
 
-    const handleVoiceInput = (setter , ref) => {
+    const handleVoiceInput = (setter , ref, isRecording, setIsRecording) => {
         if (isRecording) {
             recognitionRef.current.stop();
             //window.webkitSpeechRecognition.stop();
@@ -160,23 +148,23 @@ function PersonalDetails({onChange}) {
     <div>
         <form action="">
             <Grid container>
-                <Grid xs={6}>
-                    <TextField inputRef={nameRef} id="name" label="Name" variant="standard" value={name || ''} onChange={handleName} xs={6} 
+                <Grid xs={12} sm={6}>
+                    <TextField inputRef={nameRef} id="name" label="Name" variant="standard" value={name || ''} onChange={handleChange(setName)} xs={6} 
                         InputProps={{
                             endAdornment: <InputAdornment position="start">
-                                    <IconButton aria-label="delete" onClick={()=>handleVoiceInput(setName,nameRef)}>
-                                        {isRecording ? <GraphicEqIcon /> : <MicNoneIcon />}
+                                    <IconButton aria-label="delete" onClick={()=>handleVoiceInput(value=>setName(value),nameRef,isRecordingName, setIsRecordingName)}>
+                                        {isRecordingName ? <GraphicEqIcon /> : <MicNoneIcon />}
                                     </IconButton>
                                 </InputAdornment>,
                         }}
                     />
                 </Grid>
-                <Grid xs={6}>
-                    <TextField inputRef={jobDescriptionRef} id="jobDescription" label="Job Description" value={jobDescription} onChange={handleJobDescription} variant="standard" xs={6}
+                <Grid xs={12} sm={6}>
+                    <TextField inputRef={jobDescriptionRef} id="jobDescription" label="Job Description" value={jobDescription} onChange={handleChange(setJobDescription)} variant="standard" xs={6}
                         InputProps={{
                             endAdornment: <InputAdornment position="start">
-                                    <IconButton aria-label="delete" onClick={()=>handleVoiceInput(setName,nameRef)}>
-                                        {isRecording ? <GraphicEqIcon /> : <MicNoneIcon />}
+                                    <IconButton aria-label="delete" onClick={()=>handleVoiceInput(value => setJobDescription(value),jobDescriptionRef , isRecordingJobDescription, setIsRecordingJobDescription)}>
+                                        {isRecordingJobDescription ? <GraphicEqIcon /> : <MicNoneIcon />}
                                     </IconButton>
                                 </InputAdornment>,
                         }}
@@ -185,7 +173,7 @@ function PersonalDetails({onChange}) {
             </Grid> 
 
             <Grid container columnSpacing={2} sx={{mt:1}}>
-                <Grid item xs={4}>
+                <Grid item xs={8} sm={4}>
                     {/* <TextField id="country" label="Country" variant="standard" xs={4}/> */}
                     <FormControl variant="standard" sx={{ mt:0.3, minWidth: 90 }} size="small">
                         <InputLabel id="country">Country</InputLabel>
@@ -205,7 +193,7 @@ function PersonalDetails({onChange}) {
                         </Select>
                     </FormControl>
                 </Grid> 
-                <Grid item xs={4}>
+                <Grid item xs={8} sm={4}>
                     {/* <TextField id="state" label="State" variant="standard" xs={4}/> */}
                     <FormControl variant="standard" sx={{ mt:0.3, minWidth: 90 }} size="small">
                         <InputLabel id="states">States</InputLabel>
@@ -225,7 +213,7 @@ function PersonalDetails({onChange}) {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={8} sm={4}>
                     {/* <TextField id="city" label="City" variant="standard" xs={4}/> */}
                     <FormControl variant="standard" sx={{ mt:0.3, minWidth: 90 }} size="small">
                         <InputLabel id="City">City</InputLabel>
@@ -249,13 +237,13 @@ function PersonalDetails({onChange}) {
 
 
             <Grid container sx={{mt:1}}>
-                <Grid item xs={6}>
-                    <TextField fullWidth id="email" label="Email" variant="standard" value={email} onChange={handleEmail} xs={6}/>
+                <Grid item xs={10} sm={8}>
+                    <TextField fullWidth id="email" label="Email" variant="standard" value={email} onChange={handleChange(setEmail)} xs={6}/>
                 </Grid> 
             </Grid>
 
             <Grid container sx={{mt:1}}>
-                <Grid item xs={12}>
+                <Grid item xs={6} sm={3}>
                     <FormControl variant="standard" sx={{ mt:0.3, minWidth: 90 }} size="small">
                         <InputLabel id="countryCode">Country Code</InputLabel>
                         <Select
@@ -273,11 +261,13 @@ function PersonalDetails({onChange}) {
                             ))}
                         </Select>
                     </FormControl>
-                    <TextField inputRef={phoneRef} sx={{width:200, ml:3}} id="phone" label="Phone No" variant="standard" value={phone} onChange={handlePhone} xs={12}
+                </Grid>
+                <Grid item xs={10} sm={6}>
+                    <TextField inputRef={phoneRef} sx={{}} id="phone" label="Phone No" variant="standard" value={phone} onChange={handleChange(setPhone)} xs={12}
                         InputProps={{
                             endAdornment: <InputAdornment position="start">
-                                    <IconButton aria-label="delete" onClick={()=>handleVoiceInput(setName,nameRef)}>
-                                        {isRecording ? <GraphicEqIcon /> : <MicNoneIcon />}
+                                    <IconButton aria-label="delete" onClick={()=>handleVoiceInput(value => setPhone(value),phoneRef,isRecordingPhone, setIsRecordingPhone)}>
+                                        {isRecordingPhone  ? <GraphicEqIcon /> : <MicNoneIcon />}
                                     </IconButton>
                                 </InputAdornment>,
                         }}
@@ -290,8 +280,8 @@ function PersonalDetails({onChange}) {
             {/* This should display when additional links is displayed */}
 
             {additionalLinks.map((item,index) => (
-                <Grid container key={index}>
-                    <Grid xs={3}>
+                <Grid container key={index} columnSpacing={0}>
+                    <Grid xs={5} sm={3}>
                         <FormControl variant="standard" sx={{ mt:0.3,minWidth: 90 }} size="small">
                             <InputLabel id={`additionalLinks-${index}`}>Additional Links</InputLabel>
                             <Select
@@ -310,7 +300,7 @@ function PersonalDetails({onChange}) {
                             </Select>
                         </FormControl>
                     </Grid>
-                    <Grid xs={6}>
+                    <Grid xs={10} sm={6}>
                         <TextField
                             fullWidth
                             id={`Links-${index}`}
@@ -319,7 +309,7 @@ function PersonalDetails({onChange}) {
                             onChange={(e) => handleChangeLink(index,"url",e.target.value)}
                             variant='standard'
                             sx={{
-                                ml:1
+                                ml:0
                             }}  
                         />
                     </Grid>

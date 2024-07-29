@@ -52,7 +52,7 @@ function CreateResume() {
 
         {/* Edit Resume */}
 
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
           <Typography variant="h5" className="preview-header" sx={{mt:5}} color="initial">Edit Your Resume</Typography>
           {/* <h3 className="preview-header"></h3> */}
           <Paper square={false} elevation={8} className="paper">
@@ -62,7 +62,7 @@ function CreateResume() {
 
         {/* Preview Resume */}
 
-        <Grid  item xs={6} >
+        <Grid  item xs={12} sm={6} >
           <Typography variant="h5" className="preview-header" sx={{mt:5}} color="initial">Preview Your Resume</Typography>
           <Paper square={false} elevation={8} className="paper">
             <div ref={printRef}>

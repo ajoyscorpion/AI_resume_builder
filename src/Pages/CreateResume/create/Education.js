@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
@@ -11,6 +11,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import GraphicEqIcon from '@mui/icons-material/GraphicEq';
+import MicNoneIcon from '@mui/icons-material/MicNone';
+import InputAdornment from '@mui/material/InputAdornment';
 
 
 
@@ -25,6 +28,12 @@ function Education({onChange}) {
         selectedTo:dayjs(),
         currentCollege:false
     }])
+
+    const educationCourseRef = useRef(null)
+    const educationCollegeRef = useRef(null)
+    const [isCourseRecording, setIsCourseRecording] = useState(false);
+    const [isCollegeRecording, setIsCollegeRecording] = useState(false);
+    const recognitionRef = useRef(null);
 
     const handleAddEducation = () => {
         const updateEducations = [...educations]
@@ -65,6 +74,41 @@ function Education({onChange}) {
         onChange(updateEducation)
     }
 
+    const handleVoiceInput = (setter , ref, isRecording,setIsRecording) => {
+        if (isRecording) {
+            recognitionRef.current.stop();
+            //window.webkitSpeechRecognition.stop();
+            setIsRecording(false);
+        } else {
+            const recognition = new window.webkitSpeechRecognition()
+            recognition.lang = 'en-US'
+            recognition.continuous = true; // Continue listening even if there is a brief pause
+            recognition.interimResults = false; // Get final results only
+            recognition.start();
+            setIsRecording(true);
+            recognitionRef.current = recognition;
+            
+            recognition.onresult = (event) => {
+                if (event.results && event.results[0] && event.results[0][0]) {
+                    const transcript = event.results[0][0].transcript;
+                    console.log(transcript);
+                    setter(transcript);
+                    setTimeout(() => ref.current.focus(), 200);
+                    //onChange={()=>{setter(transcript)}}
+                }
+            }
+
+            recognition.onerror = (event) => {
+                console.log(event.error);
+                setIsRecording(false);
+            }
+
+            recognition.onend = () => {
+                setIsRecording(false);
+            };
+        }
+    }
+
     useEffect(()=>{
         console.log(educations);
     },[educations])
@@ -75,18 +119,34 @@ function Education({onChange}) {
             {educations.map((items,indexEducation)=>(
                 <>
                     <Grid container justifyContent="flex-end" alignItems="flex-end" key={indexEducation} sx={{mt:5}}>
-                    <IconButton size="small" onClick={()=>handleDeleteEducation(indexEducation)}>
-                        <RemoveIcon />
-                        <Typography variant="caption" display="block" gutterBottom sx={{mt:0.5}}>
-                            Remove
-                        </Typography>
-                    </IconButton>
+                        <IconButton size="small" onClick={()=>handleDeleteEducation(indexEducation)}>
+                            <RemoveIcon />
+                            <Typography variant="caption" display="block" gutterBottom sx={{mt:0.5}}>
+                                Remove
+                            </Typography>
+                        </IconButton>
                     </Grid>
-                    <Grid xs={8}>
-                        <TextField fullWidth width={8} id="course" label="Course" value={items.course} variant="standard" onChange={(e)=>handleChangeEducation(indexEducation,'course',e.target.value)} xs={8}/>
+                    <Grid xs={10} sm={8}>
+                        <TextField inputRef={educationCourseRef} fullWidth width={8} id="course" label="Course" value={items.course} variant="standard" onChange={(e)=>handleChangeEducation(indexEducation,'course',e.target.value)} xs={8}
+                            InputProps={{
+                                endAdornment: <InputAdornment position="start">
+                                        <IconButton aria-label="delete" onClick={()=>handleVoiceInput(value => handleChangeEducation(indexEducation,'course',value),educationCourseRef,isCourseRecording, setIsCourseRecording)}>
+                                            {isCourseRecording ? <GraphicEqIcon /> : <MicNoneIcon />}
+                                        </IconButton>
+                                    </InputAdornment>,
+                            }}
+                        />
                     </Grid>
-                    <Grid xs={7}>
-                        <TextField fullWidth id="college" label="University/College Name" value={items.college} variant="standard" onChange={(e)=>handleChangeEducation(indexEducation,'college',e.target.value)} xs={8}/>
+                    <Grid xs={10} sm={8}>
+                        <TextField inputRef={educationCollegeRef} fullWidth id="college" label="University/College Name" value={items.college} variant="standard" onChange={(e)=>handleChangeEducation(indexEducation,'college',e.target.value)} xs={8}
+                            InputProps={{
+                                endAdornment: <InputAdornment position="start">
+                                        <IconButton aria-label="delete" onClick={()=>handleVoiceInput(value => handleChangeEducation(indexEducation,'college',value),educationCollegeRef,isCollegeRecording, setIsCollegeRecording)}>
+                                            {isCollegeRecording ? <GraphicEqIcon /> : <MicNoneIcon />}
+                                        </IconButton>
+                                    </InputAdornment>,
+                            }}
+                        />
                     </Grid>
                     <Grid container>
                         <FormControlLabel
@@ -97,8 +157,8 @@ function Education({onChange}) {
                             labelPlacement="end"
                         />
                     </Grid>
-                    <Grid container>
-                        <Grid xs={4}>
+                    <Grid container columnGap={3}>
+                        <Grid xs={7} sm={4}>
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <DatePicker
                                     sx={{mt:3}}
@@ -112,10 +172,10 @@ function Education({onChange}) {
                             </LocalizationProvider>
                         </Grid>
                         {!items.currentCollege && (
-                            <Grid xs={4}>
+                            <Grid xs={7} sm={4}>
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                                     <DatePicker
-                                        sx={{mt:3,ml:3}}
+                                        sx={{mt:3,ml:0}}
                                         size="small"
                                         //const formattedFrom = dayjs(item.from).format('DD/MM/YYYY');
                                         views={['month', 'year']}

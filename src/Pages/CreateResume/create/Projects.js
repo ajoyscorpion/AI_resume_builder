@@ -22,7 +22,10 @@ function Projects({onChange}) {
 
     const projectNameRef = useRef(null)
     const projectDescriptionRef = useRef(null)
-    const [isRecording, setIsRecording] = useState(false);
+    //const [isRecording, setIsRecording] = useState(false);
+    const [isProjectNameRecording, setIsProjectNameRecording] = useState(false);
+    const [isDescriptionRecording, setIsDescriptionRecording] = useState(false);
+
     const recognitionRef = useRef(null);
 
 
@@ -93,7 +96,7 @@ function Projects({onChange}) {
         onChange(updateProjects)
     }
 
-    const handleVoiceInput = (setter , ref) => {
+    const handleVoiceInput = (setter , ref, isRecording, setIsRecording) => {
         if (isRecording) {
             recognitionRef.current.stop();
             //window.webkitSpeechRecognition.stop();
@@ -149,12 +152,12 @@ function Projects({onChange}) {
                     </IconButton>
                 </Grid>
                 <Grid container >
-                    <Grid xs={8}>
+                    <Grid xs={10} sm={8}>
                         <TextField inputRef={projectNameRef} fullWidth id="projectTitle" value={items.projectName} onChange={(e) => handleChangeProject(indexProject,'projectName',e.target.value)} label="Project Title" variant="standard" xs={8}
                             InputProps={{
                                 endAdornment: <InputAdornment position="start">
-                                        <IconButton aria-label="delete" onClick={()=>handleVoiceInput(value => handleChangeProject(indexProject,'projectName',value),projectNameRef)}>
-                                            {isRecording ? <GraphicEqIcon /> : <MicNoneIcon />}
+                                        <IconButton aria-label="delete" onClick={()=>handleVoiceInput(value => handleChangeProject(indexProject,'projectName',value),projectNameRef,isProjectNameRecording, setIsProjectNameRecording)}>
+                                            {isProjectNameRecording ? <GraphicEqIcon /> : <MicNoneIcon />}
                                         </IconButton>
                                     </InputAdornment>,
                             }}
@@ -188,8 +191,8 @@ function Projects({onChange}) {
                                 <TextField inputRef={projectDescriptionRef} fullWidth id="description" label="Description" variant="standard" value={projectDescription} onChange={(e) => handleChangeProjectDescription(indexProject,indexProjectDescription,e.target.value)} multiline rows={2} xs={10}
                                     InputProps={{
                                         endAdornment: <InputAdornment position="start">
-                                                <IconButton aria-label="delete" onClick={()=>handleVoiceInput(value => handleChangeProjectDescription(indexProject,indexProjectDescription,value),projectDescriptionRef)}>
-                                                    {isRecording ? <GraphicEqIcon /> : <MicNoneIcon />}
+                                                <IconButton aria-label="delete" onClick={()=>handleVoiceInput(value => handleChangeProjectDescription(indexProject,indexProjectDescription,value),projectDescriptionRef,isDescriptionRecording, setIsDescriptionRecording)}>
+                                                    {isDescriptionRecording ? <GraphicEqIcon /> : <MicNoneIcon />}
                                                 </IconButton>
                                             </InputAdornment>,
                                     }}

@@ -33,7 +33,10 @@ function Experience({onChange}) {
     }])
 
     const [isFresher,setIsFresher] = useState(false)
-    const [isRecording, setIsRecording] = useState(false);
+    const [isJobTitleRecording, setIsJobTitleRecording] = useState(false);
+    const [isCompanyRecording, setIsCompanyRecording] = useState(false);
+    const [isPlaceRecording, setIsPlaceRecording] = useState(false);
+    const [isDescriptionRecording, setIsDescriptionRecording] = useState(false);
     const recognitionRef = useRef(null);
     const jobTitleRef = useRef(null)
     const companyRef = useRef(null)
@@ -103,7 +106,7 @@ function Experience({onChange}) {
         setAdditionalExperience(updateExperience)
     }
 
-    const handleVoiceInput = (setter , ref) => {
+    const handleVoiceInput = (setter , ref, isRecording, setIsRecording) => {
         if (isRecording) {
             recognitionRef.current.stop();
             //window.webkitSpeechRecognition.stop();
@@ -166,12 +169,12 @@ function Experience({onChange}) {
                         </IconButton>
                     </Grid>
                     <Grid container>
-                        <Grid xs={8}>
+                        <Grid xs={10}>
                             <TextField inputRef={jobTitleRef} fullWidth id="Job Title" label="Job Title" value={item.jobTitle} onChange={(e) => handleChangeExperience(indexExperience,'jobTitle',e.target.value)} variant="standard" xs={6}
                                 InputProps={{
                                     endAdornment: <InputAdornment position="start">
-                                            <IconButton aria-label="delete" onClick={()=>handleVoiceInput(value =>handleChangeExperience(indexExperience,'jobTitle',value),jobTitleRef)}>
-                                                {isRecording ? <GraphicEqIcon /> : <MicNoneIcon />}
+                                            <IconButton aria-label="delete" onClick={()=>handleVoiceInput(value =>handleChangeExperience(indexExperience,'jobTitle',value),jobTitleRef,isJobTitleRecording, setIsJobTitleRecording)}>
+                                                {isJobTitleRecording ? <GraphicEqIcon /> : <MicNoneIcon />}
                                             </IconButton>
                                         </InputAdornment>,
                                 }}
@@ -179,23 +182,23 @@ function Experience({onChange}) {
                         </Grid>
                     </Grid>
                     <Grid container columnSpacing={0}>
-                        <Grid xs={6}>
+                        <Grid xs={10} sm={6}>
                             <TextField inputRef={companyRef} id="company" label="Company" value={item.company} onChange={(e) => handleChangeExperience(indexExperience,'company',e.target.value)} variant="standard" xs={6} 
                                 InputProps={{
                                     endAdornment: <InputAdornment position="start">
-                                            <IconButton aria-label="delete" onClick={()=>handleVoiceInput(value =>handleChangeExperience(indexExperience,'company',value),companyRef)}>
-                                                {isRecording ? <GraphicEqIcon /> : <MicNoneIcon />}
+                                            <IconButton aria-label="delete" onClick={()=>handleVoiceInput(value =>handleChangeExperience(indexExperience,'company',value),companyRef,isCompanyRecording, setIsCompanyRecording)}>
+                                                {isCompanyRecording ? <GraphicEqIcon /> : <MicNoneIcon />}
                                             </IconButton>
                                         </InputAdornment>,
                                 }}
                             />
                         </Grid>
-                        <Grid xs={6}>
+                        <Grid xs={10} sm={6}>
                             <TextField inputRef={placeRef} id="place" label="Place" value={item.place} onChange={(e) => handleChangeExperience(indexExperience,'place',e.target.value)} variant="standard" xs={6} 
                                 InputProps={{
                                     endAdornment: <InputAdornment position="start">
-                                            <IconButton aria-label="delete" onClick={()=>handleVoiceInput(value =>handleChangeExperience(indexExperience,'place',value),placeRef)}>
-                                                {isRecording ? <GraphicEqIcon /> : <MicNoneIcon />}
+                                            <IconButton aria-label="delete" onClick={()=>handleVoiceInput(value =>handleChangeExperience(indexExperience,'place',value),placeRef,isPlaceRecording, setIsPlaceRecording)}>
+                                                {isPlaceRecording ? <GraphicEqIcon /> : <MicNoneIcon />}
                                             </IconButton>
                                         </InputAdornment>,
                                 }}
@@ -211,8 +214,8 @@ function Experience({onChange}) {
                             labelPlacement="end"
                         />
                     </Grid>
-                    <Grid container>
-                        <Grid xs={4} >
+                    <Grid container columnGap={3}>
+                        <Grid xs={7} sm={4}>
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <DatePicker
                                     sx={{mt:3}}
@@ -227,7 +230,7 @@ function Experience({onChange}) {
                             {/* <TextField id="from" label="From" value={item.from} onChange={(e) => handleChangeExperience(indexExperience,'from',e.target.value)} variant="standard" xs={2} /> */}
                         </Grid>
                         {!item.currentCompany && (
-                            <Grid xs={4} sx={{ ml: 3 }}>
+                            <Grid xs={7} sm={4} sx={{ ml: 0 }}>
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                                     <DatePicker
                                         sx={{mt:3}}
@@ -257,26 +260,26 @@ function Experience({onChange}) {
                     
                     {item.descriptions.map((description,indexDesciption)=>(
                         <Grid key={indexDesciption} container sx={{ mt: 1 }}>
-                            <Grid xs={10}>
+                            <Grid xs={9} sm={10} item>
                                 <TextField inputRef={descriptionRef} fullWidth id="description" label="Description" variant="standard" value={description} onChange={(e) => handleChangeDescription(indexExperience,indexDesciption,e.target.value)} multiline rows={2} xs={10} 
                                     InputProps={{
                                         endAdornment: <InputAdornment position="start">
-                                                <IconButton aria-label="delete" onClick={()=>handleVoiceInput(value => handleChangeDescription(indexExperience,indexDesciption,value),descriptionRef)}>
-                                                    {isRecording ? <GraphicEqIcon /> : <MicNoneIcon />}
+                                                <IconButton aria-label="delete" onClick={()=>handleVoiceInput(value => handleChangeDescription(indexExperience,indexDesciption,value),descriptionRef,isDescriptionRecording, setIsDescriptionRecording)}>
+                                                    {isDescriptionRecording ? <GraphicEqIcon /> : <MicNoneIcon />}
                                                 </IconButton>
                                             </InputAdornment>,
                                     }}
                                 />
                             </Grid>
-                            <Grid xs={1}>
+                            <Grid xs={1} item>
                                 {/* To add Additional description */}
-                                <IconButton size="small" sx={{ mt: 4, ml: 2 }} onClick={() => handleAddDescription(indexExperience)}>
+                                <IconButton size="small" sx={{ mt: 4, ml: 1 }} onClick={() => handleAddDescription(indexExperience)}>
                                     <AddCircleOutlineRoundedIcon />
                                 </IconButton>
                             </Grid>
-                            <Grid xs={1}>
+                            <Grid xs={1} item>
                                 {/* To Delete Additional description */}
-                                <IconButton size="small" sx={{ mt: 4, ml: 1 }} onClick={() => handleDeleteDescription(indexExperience,indexDesciption)}>
+                                <IconButton size="small" sx={{ mt: 4, ml: 2 }} onClick={() => handleDeleteDescription(indexExperience,indexDesciption)}>
                                     <DeleteOutlineIcon />
                                 </IconButton>
                             </Grid>
