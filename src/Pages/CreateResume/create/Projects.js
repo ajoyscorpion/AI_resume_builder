@@ -165,29 +165,29 @@ function Projects({onChange}) {
                     </Grid>
 
                     {items.projectLink.map((projectLink,indexProjectLink) => (
-                        <>
+                        <Grid container columnGap={1}>
                             <Grid xs={8} key={indexProjectLink}>
                                 <TextField fullWidth id="projectLink" label="Project links" variant="standard" value={projectLink} xs={8} onChange={(e) => handleChangeProjectLink(indexProject,indexProjectLink,e.target.value)}/>
                             </Grid>
                             <Grid xs={1}>
                                 {/* To add Additional project link */}
-                                <IconButton size="small" sx={{mt:2,ml:2}} xs={1} onClick={() => handleAddProjectLink(indexProject)}>
+                                <IconButton size="small" sx={{mt:2,ml:0}} onClick={() => handleAddProjectLink(indexProject)}>
                                     <AddCircleOutlineRoundedIcon/>
                                 </IconButton>
                             </Grid>
                             <Grid xs={1}>
                                 {/* To delete Additional project link */}
-                                <IconButton size="small" sx={{mt:2,ml:1}} onClick={() => handleDeleteProjectLink(indexProjectLink,indexProject)}>
+                                <IconButton size="small" sx={{mt:2,ml:0}} onClick={() => handleDeleteProjectLink(indexProjectLink,indexProject)}>
                                     <DeleteOutlineIcon/>
                                 </IconButton>
                             </Grid>
-                        </>
+                        </Grid>
                     ))}
 
 
                     {items.projectDescription.map((projectDescription,indexProjectDescription) => (
-                        <>
-                            <Grid xs={10} key={indexProjectDescription}>
+                        <Grid container columnGap={1}>
+                            <Grid xs={8} sm={8} key={indexProjectDescription}>
                                 <TextField inputRef={projectDescriptionRef} fullWidth id="description" label="Description" variant="standard" value={projectDescription} onChange={(e) => handleChangeProjectDescription(indexProject,indexProjectDescription,e.target.value)} multiline rows={2} xs={10}
                                     InputProps={{
                                         endAdornment: <InputAdornment position="start">
@@ -200,17 +200,17 @@ function Projects({onChange}) {
                             </Grid>
                             <Grid xs={1}>
                                 {/* To add Additional description */}
-                                <IconButton size="small" sx={{mt:4,ml:2}} onClick={() => handleAddDescription(indexProject)}>
+                                <IconButton size="small" sx={{mt:4,ml:0}} onClick={() => handleAddDescription(indexProject)}>
                                     <AddCircleOutlineRoundedIcon/>
                                 </IconButton>
                             </Grid>
                             <Grid xs={1}>
                                 {/* To delete Additional description */}
-                                <IconButton size="small" sx={{mt:4,ml:1}} onClick={() => handleDeleteProjectDescription(indexProjectDescription,indexProject)}>
+                                <IconButton size="small" sx={{mt:4,ml:0}} onClick={() => handleDeleteProjectDescription(indexProjectDescription,indexProject)}>
                                     <DeleteOutlineIcon/>
                                 </IconButton>
                             </Grid>
-                        </>
+                        </Grid>
                     ))}    
 
                 </Grid>

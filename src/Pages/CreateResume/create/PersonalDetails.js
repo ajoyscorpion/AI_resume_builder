@@ -30,7 +30,6 @@ function PersonalDetails({onChange}) {
     const [isRecordingJobDescription, setIsRecordingJobDescription] = useState(false);
     const [isRecordingPhone, setIsRecordingPhone] = useState(false);
     const recognitionRef = useRef(null);
-    const [isRecording, setIsRecording] = useState(false);
 
 
     //const [activeField, setActiveField] = useState('');

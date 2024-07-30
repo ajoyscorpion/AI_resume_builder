@@ -26,7 +26,7 @@ function Summary({jobDescription, onChange}) {
         try {
             const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash"});
 
-            const prompt = `Generate a professional summary for the following job description: ${description},${summary} in three lines:`
+            const prompt = `Generate a professional summary for a person applying for the following job description: ${description},${summary} in three lines:`
 
             const result = await model.generateContent(prompt);
             const response = result.response;

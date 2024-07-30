@@ -21,9 +21,9 @@ function FormResume({onPrint}) {
     const {resumeDetails,setResumeDetails} = useContext(ResumeDetailsContext)
     const jobDescription = resumeDetails.personalDetails?.jobDescription || ''
     const resume = resumeDetails
-    const projects = resumeDetails.projects
-    const education = resumeDetails.education
-    const skills = resumeDetails.skills
+    //const projects = resumeDetails.projects
+    //const education = resumeDetails.education
+    //const skills = resumeDetails.skills
 
     const handlePersonalDetails = (data) => {
         setResumeDetails(items => ({

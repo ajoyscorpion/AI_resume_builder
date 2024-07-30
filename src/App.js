@@ -6,10 +6,10 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Error_404 from './Pages/error_404';
-import Dashboard from './Pages/dashboard';
+//import Dashboard from './Pages/dashboard';
 import Footer from './Components/Footer';
 import CreateResume from './Pages/CreateResume';
-import UpdateResume from './Pages/UpdateResume';
+//import UpdateResume from './Pages/UpdateResume';
 
 
 const router = createBrowserRouter([
@@ -21,17 +21,9 @@ const router = createBrowserRouter([
     
   },
   {
-    path:"/dashboard",
-    element:<Dashboard/>
-  },
-  {
     path:"/create_resume",
     element:<CreateResume/>
   },
-  {
-    path:"/update_resume",
-    element:<UpdateResume/>
-  }
 ]);
 
 function App() {

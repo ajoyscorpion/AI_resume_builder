@@ -7,7 +7,7 @@ function PersonalInformation({data}) {
         {/* Name */}
         <h2>{data.name}</h2>
         {/* Place */}
-        <p>{data.city},{data.state},{data.country}</p>
+        <p>{data.city}, {data.state}, {data.country}</p>
         {/* email */}
         <p>Email : {data.email}</p>
         {/* Additional links */}
